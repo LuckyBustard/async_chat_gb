@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  python:
+    container_name: python_async_chat
+    image: "python:3.7-buster"
+    command: python server.py && tail -f /dev/null
+    working_dir: /app
+    volumes:
+      - ./:/app/
