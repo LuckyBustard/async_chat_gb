@@ -7,4 +7,4 @@ services:
     command: python server.py && tail -f /dev/null
     working_dir: /app
     volumes:
-      - ./:/app/
+      - ./app:/app

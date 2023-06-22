@@ -1,7 +1,7 @@
 import json
 import sys
 from socket import socket
-from app.common.vars import ENCODING, MAX_PACKET_LENGTH
+from common import vars
 
 
 def get_message(sock: socket) -> dict:
@@ -11,9 +11,9 @@ def get_message(sock: socket) -> dict:
     :param sock:
     :return:
     """
-    response = sock.recv(MAX_PACKET_LENGTH)
+    response = sock.recv(vars.MAX_PACKET_LENGTH)
     if isinstance(response, bytes):
-        response = json.loads(response.decode(ENCODING))
+        response = json.loads(response.decode(vars.ENCODING))
         if isinstance(response, dict):
             return response
         raise ValueError
@@ -29,7 +29,7 @@ def send_message(sock: socket, message: json) -> int:
     :return:
     """
 
-    return sock.send(json.dumps(message).encode(ENCODING))
+    return sock.send(json.dumps(message).encode(vars.ENCODING))
 
 
 def get_config_data():
