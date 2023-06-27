@@ -1,0 +1,5 @@
+2023-06-27 19:21:13,201        INFO       server accept message from ('127.0.0.1', 40440) 
+2023-06-27 19:21:13,257        DEBUG      server new message to send client {'action': 'presence', 'time': 1687893673.2144725, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:21:13,265        DEBUG      server receive new message {'action': 'presence', 'time': 1687893673.2144725, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:21:13,271        DEBUG      server message ok 
+2023-06-27 19:21:13,277        DEBUG      server wait a message 
