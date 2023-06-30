@@ -1,0 +1,49 @@
+2023-06-27 19:08:45,042        INFO       server server starting, listen ip 0.0.0.0, server port 7777 
+2023-06-27 19:08:45,418        DEBUG      server wait a message 
+2023-06-27 19:09:26,742        INFO       server accept message from ('127.0.0.1', 33600) 
+2023-06-27 19:09:26,789        DEBUG      server new message to send client {'action': 'presence', 'time': 1687892966.7745285, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:09:26,796        DEBUG      server receive new message {'action': 'presence', 'time': 1687892966.7745285, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:09:26,803        DEBUG      server message ok 
+2023-06-27 19:09:26,814        DEBUG      server wait a message 
+2023-06-27 19:11:36,595        INFO       server accept message from ('127.0.0.1', 58828) 
+2023-06-27 19:11:36,628        DEBUG      server new message to send client {'action': 'presence', 'time': 1687893096.6280684, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:11:36,640        DEBUG      server receive new message {'action': 'presence', 'time': 1687893096.6280684, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:11:36,646        DEBUG      server message ok 
+2023-06-27 19:11:36,658        DEBUG      server wait a message 
+2023-06-27 19:14:07,253        INFO       server accept message from ('127.0.0.1', 60278) 
+2023-06-27 19:14:07,284        DEBUG      server new message to send client {'action': 'presence', 'time': 1687893247.2835906, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:14:07,291        DEBUG      server receive new message {'action': 'presence', 'time': 1687893247.2835906, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:14:07,297        DEBUG      server message ok 
+2023-06-27 19:14:07,353        DEBUG      server wait a message 
+2023-06-27 19:14:32,617        INFO       server accept message from ('127.0.0.1', 45298) 
+2023-06-27 19:14:32,641        DEBUG      server new message to send client {'action': 'presence', 'time': 1687893272.641377, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:14:32,659        DEBUG      server receive new message {'action': 'presence', 'time': 1687893272.641377, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:14:32,669        DEBUG      server message ok 
+2023-06-27 19:14:32,678        DEBUG      server wait a message 
+2023-06-27 19:14:51,222        INFO       server accept message from ('127.0.0.1', 42700) 
+2023-06-27 19:14:51,237        DEBUG      server new message to send client {'action': 'presence', 'time': 1687893291.235986, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:14:51,243        DEBUG      server receive new message {'action': 'presence', 'time': 1687893291.235986, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:14:51,250        DEBUG      server message ok 
+2023-06-27 19:14:51,261        DEBUG      server wait a message 
+2023-06-27 19:16:40,217        INFO       server accept message from ('127.0.0.1', 51048) 
+2023-06-27 19:16:40,238        DEBUG      server new message to send client {'action': 'presence', 'time': 1687893400.2369936, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:16:40,245        DEBUG      server receive new message {'action': 'presence', 'time': 1687893400.2369936, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:16:40,252        DEBUG      server message ok 
+2023-06-27 19:16:40,258        DEBUG      server wait a message 
+2023-06-27 19:17:38,429        INFO       server accept message from ('127.0.0.1', 45306) 
+2023-06-27 19:17:38,446        DEBUG      server new message to send client {'action': 'presence', 'time': 1687893458.4426205, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:17:38,453        DEBUG      server receive new message {'action': 'presence', 'time': 1687893458.4426205, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:17:38,460        DEBUG      server message ok 
+2023-06-27 19:17:38,468        DEBUG      server wait a message 
+2023-06-27 19:18:28,897        INFO       server accept message from ('127.0.0.1', 54802) 
+2023-06-27 19:18:28,910        DEBUG      server new message to send client {'action': 'presence', 'time': 1687893508.9095294, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:18:28,922        DEBUG      server receive new message {'action': 'presence', 'time': 1687893508.9095294, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:18:28,930        DEBUG      server message ok 
+2023-06-27 19:18:28,947        DEBUG      server wait a message 
+2023-06-27 19:19:38,400        INFO       server accept message from ('127.0.0.1', 37018) 
+2023-06-27 19:19:38,418        DEBUG      server new message to send client {'action': 'presence', 'time': 1687893578.4172268, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:19:38,424        DEBUG      server receive new message {'action': 'presence', 'time': 1687893578.4172268, 'user': {'account_name': 'Guest'}} 
+2023-06-27 19:19:38,431        DEBUG      server message ok 
+2023-06-27 19:19:38,438        DEBUG      server wait a message 
+2023-06-27 19:20:09,814        INFO       server server starting, listen ip 0.0.0.0, server port 7777 
+2023-06-27 19:20:09,819        DEBUG      server wait a message 

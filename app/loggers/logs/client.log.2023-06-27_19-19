@@ -1,0 +1,8 @@
+2023-06-27 19:19:38,352        INFO       client connecting to server, server ip 0.0.0.0, server port 7777 
+2023-06-27 19:19:38,399        INFO       client connected to server 
+2023-06-27 19:19:38,409        DEBUG      client Create presence message account_name: Guest 
+2023-06-27 19:19:40,421        DEBUG      client receive new message {'response': 200} 
+2023-06-27 19:19:40,515        DEBUG      client message ok 
+2023-06-27 19:19:40,522        DEBUG      client answer from server: 200: OK 
+2023-06-27 19:19:42,541        DEBUG      client Create presence message account_name: Admin 
+2023-06-27 19:19:44,552        ERROR      client Неверный формат сообщения 

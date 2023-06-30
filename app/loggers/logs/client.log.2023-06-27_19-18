@@ -1,0 +1,70 @@
+2023-06-27 19:09:26,729        INFO       client connecting to server, server ip 0.0.0.0, server port 7777 
+2023-06-27 19:09:26,740        INFO       client connected to server 
+2023-06-27 19:09:26,745        DEBUG      client Create presence message account_name: Guest 
+2023-06-27 19:09:26,814        DEBUG      client receive new message {'response': 200} 
+2023-06-27 19:09:26,824        DEBUG      client message ok 
+2023-06-27 19:09:26,834        DEBUG      client answer from server: 200: OK 
+2023-06-27 19:09:26,841        DEBUG      client Create presence message account_name: Admin 
+2023-06-27 19:09:26,852        ERROR      client Неверный формат сообщения 
+2023-06-27 19:09:26,864        DEBUG      client Create presence message account_name: Guest 
+2023-06-27 19:11:36,580        INFO       client connecting to server, server ip 0.0.0.0, server port 7777 
+2023-06-27 19:11:36,596        INFO       client connected to server 
+2023-06-27 19:11:36,622        DEBUG      client Create presence message account_name: Guest 
+2023-06-27 19:11:36,659        DEBUG      client receive new message {'response': 200} 
+2023-06-27 19:11:36,665        DEBUG      client message ok 
+2023-06-27 19:11:36,673        DEBUG      client answer from server: 200: OK 
+2023-06-27 19:11:36,679        DEBUG      client Create presence message account_name: Admin 
+2023-06-27 19:11:36,690        ERROR      client Неверный формат сообщения 
+2023-06-27 19:11:36,696        DEBUG      client Create presence message account_name: Guest 
+2023-06-27 19:14:07,237        INFO       client connecting to server, server ip 0.0.0.0, server port 7777 
+2023-06-27 19:14:07,253        INFO       client connected to server 
+2023-06-27 19:14:07,259        DEBUG      client Create presence message account_name: Guest 
+2023-06-27 19:14:07,363        DEBUG      client receive new message {'response': 200} 
+2023-06-27 19:14:07,390        DEBUG      client message ok 
+2023-06-27 19:14:07,403        DEBUG      client answer from server: 200: OK 
+2023-06-27 19:14:09,421        DEBUG      client Create presence message account_name: Admin 
+2023-06-27 19:14:09,438        ERROR      client Неверный формат сообщения 
+2023-06-27 19:14:09,447        DEBUG      client Create presence message account_name: Guest 
+2023-06-27 19:14:32,607        INFO       client connecting to server, server ip 0.0.0.0, server port 7777 
+2023-06-27 19:14:32,618        INFO       client connected to server 
+2023-06-27 19:14:32,625        DEBUG      client Create presence message account_name: Guest 
+2023-06-27 19:14:32,679        DEBUG      client receive new message {'response': 200} 
+2023-06-27 19:14:32,685        DEBUG      client message ok 
+2023-06-27 19:14:32,708        DEBUG      client answer from server: 200: OK 
+2023-06-27 19:14:34,720        DEBUG      client Create presence message account_name: Admin 
+2023-06-27 19:14:34,728        ERROR      client Неверный формат сообщения 
+2023-06-27 19:14:34,739        DEBUG      client Create presence message account_name: Guest 
+2023-06-27 19:14:51,213        INFO       client connecting to server, server ip 0.0.0.0, server port 7777 
+2023-06-27 19:14:51,222        INFO       client connected to server 
+2023-06-27 19:14:51,230        DEBUG      client Create presence message account_name: Guest 
+2023-06-27 19:14:51,260        DEBUG      client receive new message {'response': 200} 
+2023-06-27 19:14:51,267        DEBUG      client message ok 
+2023-06-27 19:14:51,274        DEBUG      client answer from server: 200: OK 
+2023-06-27 19:14:53,282        DEBUG      client Create presence message account_name: Admin 
+2023-06-27 19:14:53,290        ERROR      client Неверный формат сообщения 
+2023-06-27 19:14:53,308        DEBUG      client Create presence message account_name: Guest 
+2023-06-27 19:16:40,208        INFO       client connecting to server, server ip 0.0.0.0, server port 7777 
+2023-06-27 19:16:40,218        INFO       client connected to server 
+2023-06-27 19:16:40,230        DEBUG      client Create presence message account_name: Guest 
+2023-06-27 19:16:42,238        DEBUG      client receive new message {'response': 200} 
+2023-06-27 19:16:42,252        DEBUG      client message ok 
+2023-06-27 19:16:42,258        DEBUG      client answer from server: 200: OK 
+2023-06-27 19:16:44,266        DEBUG      client Create presence message account_name: Admin 
+2023-06-27 19:16:46,273        ERROR      client Неверный формат сообщения 
+2023-06-27 19:16:46,280        DEBUG      client Create presence message account_name: Guest 
+2023-06-27 19:17:38,420        INFO       client connecting to server, server ip 0.0.0.0, server port 7777 
+2023-06-27 19:17:38,428        INFO       client connected to server 
+2023-06-27 19:17:38,435        DEBUG      client Create presence message account_name: Guest 
+2023-06-27 19:17:40,443        DEBUG      client receive new message {'response': 200} 
+2023-06-27 19:17:40,450        DEBUG      client message ok 
+2023-06-27 19:17:40,457        DEBUG      client answer from server: 200: OK 
+2023-06-27 19:17:42,470        DEBUG      client Create presence message account_name: Admin 
+2023-06-27 19:17:44,480        ERROR      client Неверный формат сообщения 
+2023-06-27 19:18:28,890        INFO       client connecting to server, server ip 0.0.0.0, server port 7777 
+2023-06-27 19:18:28,897        INFO       client connected to server 
+2023-06-27 19:18:28,902        DEBUG      client Create presence message account_name: Guest 
+2023-06-27 19:18:30,911        DEBUG      client receive new message {'response': 200} 
+2023-06-27 19:18:30,916        DEBUG      client message ok 
+2023-06-27 19:18:30,921        DEBUG      client answer from server: 200: OK 
+2023-06-27 19:18:32,928        DEBUG      client Create presence message account_name: Admin 
+2023-06-27 19:18:34,935        ERROR      client Неверный формат сообщения 
