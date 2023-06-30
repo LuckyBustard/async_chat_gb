@@ -6,11 +6,13 @@ from common import vars
 from common.utils import get_message, send_message, get_config_data
 import logging
 import loggers.client_logs
+from deorators.call_logger import CallLogger
 
 
 logger = logging.getLogger('app.client')
 
 
+@CallLogger()
 def create_presence(account_name='Guest') -> dict:
     logger.debug(f'Create presence message account_name: {account_name}')
     return {
@@ -22,6 +24,7 @@ def create_presence(account_name='Guest') -> dict:
     }
 
 
+@CallLogger()
 def process_answer(message: dict):
     logger.debug(f'receive new message {message}')
     if vars.RESPONSE in message:
