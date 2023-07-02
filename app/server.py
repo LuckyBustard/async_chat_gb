@@ -4,10 +4,12 @@ from common import vars
 from common.utils import get_message, send_message, get_config_data
 import logging
 import loggers.server_logs
+from deorators.call_logger import CallLogger
 
 logger = logging.getLogger('app.server')
 
 
+@CallLogger()
 def client_presence(message: dict) -> dict:
     logger.debug(f'receive new message {message}')
     if vars.ACTION in message and message[vars.ACTION] == vars.PRESENCE and vars.TIME in message \
