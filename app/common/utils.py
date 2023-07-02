@@ -1,7 +1,12 @@
+import argparse
 import json
+import logging
 import sys
 from socket import socket
 from common import vars
+from loggers.server_logs import server_logger
+
+logger = logging.getLogger('app.server')
 
 
 def get_message(sock: socket) -> dict:
@@ -12,6 +17,7 @@ def get_message(sock: socket) -> dict:
     :return:
     """
     response = sock.recv(vars.MAX_PACKET_LENGTH)
+
     if isinstance(response, bytes):
         response = json.loads(response.decode(vars.ENCODING))
         if isinstance(response, dict):
@@ -28,31 +34,24 @@ def send_message(sock: socket, message: json) -> int:
     :param sock:
     :return:
     """
-
-    return sock.send(json.dumps(message).encode(vars.ENCODING))
+    try:
+        effect = sock.send(json.dumps(message).encode(vars.ENCODING))
+    except Exception as e:
+        logger.debug(f'{e} - error')
+    return effect
 
 
 def get_config_data():
-    listen_ip = vars.DEFAULT_SERVER_IP
-    listen_port = vars.DEFAULT_SERVER_PORT
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-a', '--addr', default=vars.DEFAULT_SERVER_IP, nargs='?')
+    parser.add_argument('-p', '--port', default=vars.DEFAULT_SERVER_PORT, type=int, nargs='?')
+    parser.add_argument('-m', '--mode', default='listen', nargs='?')
+    args = parser.parse_args(sys.argv[1:])
+    listen_ip = args.addr
+    listen_port = args.port
+    client_mode = args.mode
 
-    try:
-        if '-p' in sys.argv:
-            listen_port = int(sys.argv[sys.argv.index('-p') + 1])
-            if 65535 < listen_port < 1024:
-                raise ValueError
-    except IndexError:
-        print('После параметра не указан порт')
-        sys.exit(1)
-    except ValueError:
-        print('Значение порта указано вне диапозона')
-        sys.exit(1)
+    if 65535 < listen_port < 1024:
+        raise ValueError
 
-    try:
-        if '-a' in sys.argv:
-            listen_port = sys.argv[sys.argv.index('-a') + 1]
-    except IndexError:
-        print('После параметра не указан ip адрес')
-        sys.exit(1)
-
-    return listen_ip, listen_port
+    return listen_ip, listen_port, client_mode
