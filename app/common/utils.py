@@ -45,13 +45,22 @@ def get_config_data():
     parser = argparse.ArgumentParser()
     parser.add_argument('-a', '--addr', default=vars.DEFAULT_SERVER_IP, nargs='?')
     parser.add_argument('-p', '--port', default=vars.DEFAULT_SERVER_PORT, type=int, nargs='?')
-    parser.add_argument('-m', '--mode', default='listen', nargs='?')
+    parser.add_argument('-n', '--name', default='listen', nargs='?')
     args = parser.parse_args(sys.argv[1:])
     listen_ip = args.addr
     listen_port = args.port
-    client_mode = args.mode
+    client_mode = args.name
 
     if 65535 < listen_port < 1024:
         raise ValueError
 
-    return listen_ip, listen_port, client_mode
+    return listen_ip, listen_port, str(client_mode)
+
+
+def create_response(error: str = ''):
+    if error:
+        return {
+            vars.RESPONSE: 400,
+            vars.ERROR: 'Bad request'
+        }
+    return {vars.RESPONSE: 200}
