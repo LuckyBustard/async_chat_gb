@@ -13,4 +13,6 @@ ACCOUNT_NAME = 'account_name'
 
 PRESENCE = 'presence'
 RESPONSE = 'response'
+MESSAGE = 'message'
+MESSAGE_TEXT = 'message_text'
 ERROR = 'error'
