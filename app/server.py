@@ -1,11 +1,11 @@
 import time
 import logging
+from common.meta_classes import ServerMaker
 from select import select
 from socket import socket, AF_INET, SOCK_STREAM
 from common import vars
 from common.abstract_messenger import AbstractMessenger
 from deorators.call_logger import CallLogger
-from common.meta_classes import ServerMaker
 import loggers.server_logs
 
 

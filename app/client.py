@@ -2,10 +2,10 @@ import threading
 import time
 import sys
 import logging
+from common.meta_classes import ClientMaker
 from socket import socket, AF_INET, SOCK_STREAM
 from common import vars
 from common.abstract_messenger import AbstractMessenger
-from common.meta_classes import ClientMaker
 from deorators.call_logger import CallLogger
 import loggers.client_logs
 

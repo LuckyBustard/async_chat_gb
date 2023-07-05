@@ -17,8 +17,8 @@ class ServerMaker(type):
                             globals.append(i.argval)
         if 'connect' in globals:
             raise TypeError('Использование метода connect недопустимо в серверном классе')
-        # if not ('SOCK_STREAM' in globals and 'AF_INET' in globals):
-        #     raise TypeError('Некорректная инициализация сокета.')
+        if not ('SOCK_STREAM' in globals and 'AF_INET' in globals):
+            raise TypeError('Некорректная инициализация сокета.')
         super().__init__(clsname, bases, clsdict)
 
 
