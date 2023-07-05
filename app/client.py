@@ -1,15 +1,16 @@
-import socket
 import threading
 import time
 import sys
+import logging
+from socket import socket, AF_INET, SOCK_STREAM
 from common import vars
 from common.abstract_messenger import AbstractMessenger
-import logging
-import loggers.client_logs
+from common.meta_classes import ClientMaker
 from deorators.call_logger import CallLogger
+import loggers.client_logs
 
 
-class Client(AbstractMessenger):
+class Client(AbstractMessenger, metaclass=ClientMaker):
     account_name: str
     sock: socket
     logger: logging.Logger
@@ -17,9 +18,11 @@ class Client(AbstractMessenger):
     def __init__(self):
         self.logger = logging.getLogger('app.client')
         self.get_config_data()
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sock.connect((self.listen_host, self.listen_port))
         self.logger.info('connected to server')
+
+    def connect(self):
+        self.sock = socket(AF_INET, SOCK_STREAM)
+        self.sock.connect((self.listen_host, self.listen_port))
 
     @CallLogger()
     def create_presence(self):
@@ -78,6 +81,7 @@ class Client(AbstractMessenger):
         raise ValueError
 
     def runner(self):
+        self.connect()
         receiver = threading.Thread(target=self.receive_message)
         receiver.daemon = True
         receiver.start()

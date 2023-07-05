@@ -1,12 +1,13 @@
-import logging
+import threading
 import time
+import sys
+import logging
 from select import select
-import socket
+from socket import socket, AF_INET, SOCK_STREAM
 from common import vars
 from common.abstract_messenger import AbstractMessenger
 from deorators.call_logger import CallLogger
 from common.meta_classes import ServerMaker
-
 import loggers.server_logs
 
 
@@ -23,7 +24,7 @@ class Server(AbstractMessenger, metaclass=ServerMaker):
 
     @CallLogger()
     def init_socket(self):
-        self.transport = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.transport = socket(AF_INET, SOCK_STREAM)
         self.transport.bind((self.listen_host, self.listen_port))
         self.transport.listen(vars.MAX_CONNECTIONS)
         self.transport.settimeout(0.5)
