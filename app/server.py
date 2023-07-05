@@ -1,6 +1,4 @@
-import threading
 import time
-import sys
 import logging
 from select import select
 from socket import socket, AF_INET, SOCK_STREAM
