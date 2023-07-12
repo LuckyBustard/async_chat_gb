@@ -11,10 +11,6 @@ import loggers.client_logs
 
 
 class Client(AbstractMessenger, metaclass=ClientMaker):
-    account_name: str
-    sock: socket
-    logger: logging.Logger
-
     def __init__(self):
         self.logger = logging.getLogger('app.client')
         self.get_config_data()

@@ -1,26 +1,24 @@
 import time
 import logging
-from common.meta_classes import ServerMaker
-from select import select
 from socket import socket, AF_INET, SOCK_STREAM
+from select import select
 from common import vars
 from common.abstract_messenger import AbstractMessenger
+from common.meta_classes import ServerMaker
 from deorators.call_logger import CallLogger
 import loggers.server_logs
 
 
 class Server(AbstractMessenger, metaclass=ServerMaker):
-    transport: socket
-    connected_clients = []
-    waiting_messages = []
-    users_list = dict()
-
     def __init__(self):
+        self.transport: socket = None
         self.logger = logging.getLogger('app.server')
         self.get_config_data()
         self.logger.info(f'server starting, listen ip {self.listen_host}, server port {self.listen_host}')
+        self.connected_clients = []
+        self.waiting_messages = []
+        self.users_list = dict()
 
-    @CallLogger()
     def init_socket(self):
         self.transport = socket(AF_INET, SOCK_STREAM)
         self.transport.bind((self.listen_host, self.listen_port))
