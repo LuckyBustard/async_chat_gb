@@ -34,13 +34,11 @@ class ClientMaker(type):
             methods.append(name)
         for func in clsdict:
             try:
-                logger.debug(func)
                 ret = dis.get_instructions(clsdict[func])
             except TypeError:
                 pass
             else:
                 for i in ret:
-                    logger.debug(i)
                     if i.opname == 'LOAD_GLOBAL':
                         if i.argval not in methods:
                             methods.append(i.argval)

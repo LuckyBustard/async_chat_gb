@@ -19,3 +19,5 @@ DESTINATION = 'destination'
 DESTINATION_ALL = 'all'
 ERROR = 'error'
 EXIT = 'exit'
+
+SERVER_DATABASE = 'sqlite:///server_base.db3'
