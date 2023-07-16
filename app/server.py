@@ -151,8 +151,6 @@ def main():
     server.start()
 
     print_help()
-    time.sleep(5)
-    server.logger.debug(sorted(database.users_list()))
 
     while True:
         while True:
