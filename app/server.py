@@ -1,3 +1,4 @@
+import threading
 import time
 import logging
 from socket import socket, AF_INET, SOCK_STREAM
@@ -6,11 +7,12 @@ from common import vars
 from common.abstract_messenger import AbstractMessenger
 from common.meta_classes import ServerMaker
 from deorators.call_logger import CallLogger
-import loggers.server_logs
+from common.server_database import ServerStorage
 
 
-class Server(AbstractMessenger, metaclass=ServerMaker):
-    def __init__(self):
+class Server(AbstractMessenger, threading.Thread, metaclass=ServerMaker):
+    def __init__(self, database):
+        super().__init__()
         self.transport: socket = None
         self.logger = logging.getLogger('app.server')
         self.get_config_data()
@@ -18,6 +20,7 @@ class Server(AbstractMessenger, metaclass=ServerMaker):
         self.connected_clients = []
         self.waiting_messages = []
         self.users_list = dict()
+        self.database = database
 
     def init_socket(self):
         self.transport = socket(AF_INET, SOCK_STREAM)
@@ -43,6 +46,8 @@ class Server(AbstractMessenger, metaclass=ServerMaker):
             if message[vars.ACTION] == vars.PRESENCE:
                 if message[vars.USER][vars.ACCOUNT_NAME] not in self.users_list.keys():
                     self.users_list[message[vars.USER][vars.ACCOUNT_NAME]] = client_sock
+                    client_ip, client_port = client_sock.getpeername()
+                    self.database.user_login(message[vars.USER][vars.ACCOUNT_NAME], client_ip, client_port)
                     self.send_message(self.create_response())
                 else:
                     self.send_message(self.create_response('Имя пользователя уже занято.'))
@@ -56,6 +61,7 @@ class Server(AbstractMessenger, metaclass=ServerMaker):
 
             elif message[vars.ACTION] == vars.EXIT:
                 client_sock.close()
+                self.database.user_logout(message[vars.ACCOUNT_NAME])
                 del self.users_list[message[vars.USER][vars.ACCOUNT_NAME]]
 
             return
@@ -82,7 +88,7 @@ class Server(AbstractMessenger, metaclass=ServerMaker):
                 self.connected_clients.remove(waiting_client)
 
     @CallLogger()
-    def runner(self):
+    def run(self):
         self.init_socket()
 
         while True:
@@ -128,6 +134,46 @@ class Server(AbstractMessenger, metaclass=ServerMaker):
                         self.message_sender(user_name, message)
 
 
+def print_help():
+    print('Поддерживаемые комманды:')
+    print('users - список известных пользователей')
+    print('connected - список подключенных пользователей')
+    print('loghist - история входов пользователя')
+    print('exit - завершение работы сервера.')
+    print('help - вывод справки по поддерживаемым командам')
+
+
+def main():
+    database = ServerStorage()
+    server = Server(database)
+    server.daemon = True
+
+    server.start()
+
+    print_help()
+
+    while True:
+        while True:
+            command = input('Введите комманду: ')
+            if command == 'help':
+                print_help()
+            elif command == 'exit':
+                break
+            elif command == 'users':
+                for user in sorted(database.users_list()):
+                    print(f'Пользователь {user[0]}, последний вход: {user[1]}')
+            elif command == 'connected':
+                for user in sorted(database.active_users_list()):
+                    print(
+                        f'Пользователь {user[0]}, подключен: {user[1]}:{user[2]}, время установки соединения: {user[3]}')
+            elif command == 'loghist':
+                name = input(
+                    'Введите имя пользователя для просмотра истории. Для вывода всей истории, просто нажмите Enter: ')
+                for user in sorted(database.login_history(name)):
+                    print(f'Пользователь: {user[0]} время входа: {user[1]}. Вход с: {user[2]}:{user[3]}')
+            else:
+                print('Команда не распознана.')
+
+
 if __name__ == '__main__':
-    server = Server()
-    server.runner()
+    main()

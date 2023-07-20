@@ -33,6 +33,7 @@ class Client(AbstractMessenger, metaclass=ClientMaker):
 
     @CallLogger()
     def create_meesage(self):
+        self.create_presence()
         while True:
             destination = input('Введите пользователя или all для отправки или \'@q\' для завершения работы: ')
             message_text = input('Введите сообщение для отправки или \'@q\' для завершения работы: ')
