@@ -136,6 +136,7 @@ class ClientMessenger(AbstractMessenger):
                     self.logger.info(f'Получено сообщение 200')
                 elif vars.ACTION in message and message[vars.ACTION] == vars.MESSAGE and \
                         vars.USER in message and vars.MESSAGE_TEXT in message:
+                    self.database.save_message(message[vars.USER][vars.ACCOUNT_NAME], 'in', message[vars.MESSAGE_TEXT])
                     self.logger.info(
                         f'Получено сообщение от пользователя {message[vars.USER][vars.ACCOUNT_NAME]}: {message[vars.MESSAGE_TEXT]}')
                 else:
