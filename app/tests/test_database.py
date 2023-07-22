@@ -4,7 +4,7 @@ import unittest
 
 sys.path.append(os.path.join(os.getcwd(), '..'))
 
-from common.server_database import ServerStorage
+from database.server_database import ServerStorage
 
 
 class TestDatabase(unittest.TestCase):
