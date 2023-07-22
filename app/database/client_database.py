@@ -13,10 +13,10 @@ class ClientStorage:
             self.username = user
 
     class MessageHistory:
-        def __init__(self, from_user, to_user, message):
+        def __init__(self, contact, direction, message):
             self.id = None
-            self.from_user = from_user
-            self.to_user = to_user
+            self.contact = contact
+            self.direction = direction
             self.message = message
             self.date = datetime.datetime.now()
 
@@ -45,8 +45,8 @@ class ClientStorage:
         history = Table(
             'message_history', self.metadata,
             Column('id', Integer, primary_key=True),
-            Column('from_user', String),
-            Column('to_user', String),
+            Column('contact', String),
+            Column('direction', String),
             Column('message', Text),
             Column('date', DateTime)
         )
@@ -83,7 +83,21 @@ class ClientStorage:
             self.session.add(user_row)
             self.session.commit()
 
-    def save_message(self, from_user, to_user, message):
-        message_row = self.MessageHistory(from_user, to_user, message)
+    def save_message(self, contact, direction, message):
+        message_row = self.MessageHistory(contact, direction, message)
         self.session.add(message_row)
         self.session.commit()
+
+    def get_users(self):
+        return [user[0] for user in self.session.query(self.KnownUsers.username).all()]
+
+    def get_contacts(self):
+        return [contact[0] for contact in self.session.query(self.Contacts.name).all()]
+
+    def get_history(self, contact):
+        query = self.session.query(self.MessageHistory).filter_by(contact=contact)
+        return [(history_row.contact, history_row.direction, history_row.message, history_row.date)
+                for history_row in query.all()]
+
+    def remove_contact(self, user):
+        self.session.query(self.Contacts).filter_by(name=user).delete()

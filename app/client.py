@@ -2,11 +2,16 @@ import threading
 import time
 import sys
 import logging
+
+from PyQt6.QtWidgets import QApplication
+
 from meta_classes.client_maker import ClientMaker
 from socket import socket, AF_INET, SOCK_STREAM
 from messagers.client_messenger import ClientMessenger
 from database.client_database import ClientStorage
 from deorators.call_logger import CallLogger
+from gui.main_window import ClientMainWindow
+from gui.start_dialog import UserNameDialog
 
 
 class Client(ClientMessenger, metaclass=ClientMaker):
@@ -33,6 +38,12 @@ class Client(ClientMessenger, metaclass=ClientMaker):
         sender = threading.Thread(target=self.create_meesage)
         sender.daemon = True
         sender.start()
+
+        client_app = QApplication(sys.argv)
+        main_window = ClientMainWindow(self)
+        #main_window.make_connection(self)
+        main_window.setWindowTitle(f'Чат Программа alpha release - {self.account_name}')
+        client_app.exec()
 
         while True:
             try:

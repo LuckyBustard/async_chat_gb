@@ -49,6 +49,7 @@ class AbstractMessenger:
         :param sock:
         :return:
         """
+        logger.debug(message)
         try:
             effect = sock.send(json.dumps(message).encode(vars.ENCODING))
         except Exception as e:

@@ -1,9 +1,12 @@
+import logging
 import threading
 import time
 import sys
 from common import vars
 from messagers.abstract_messenger import AbstractMessenger
 from deorators.call_logger import CallLogger
+from loggers.client_logs import server_logger
+
 
 
 class ClientMessenger(AbstractMessenger):
@@ -51,11 +54,9 @@ class ClientMessenger(AbstractMessenger):
                 self.edit_contacts()
 
     @CallLogger()
-    def message_to_user(self):
-        destination = input('Введите пользователя или all для отправки: ')
-        message_text = input('Введите сообщение для отправки: ')
+    def message_to_user(self, user_name, message_text):
         self.logger.debug(f'Create text message account_name: {self.account_name}')
-        self.database.save_message(self.account_name, destination, message_text)
+        self.database.save_message(self.account_name, 'out', message_text)
         with self.socket_lock:
             self.send_message(self.sock, {
                 vars.ACTION: vars.MESSAGE,
@@ -64,7 +65,7 @@ class ClientMessenger(AbstractMessenger):
                     vars.ACCOUNT_NAME: self.account_name
                 },
                 vars.MESSAGE_TEXT: message_text,
-                vars.DESTINATION: destination,
+                vars.DESTINATION: user_name,
             })
 
     @CallLogger()
@@ -95,7 +96,8 @@ class ClientMessenger(AbstractMessenger):
                 })
             except Exception as e:
                 print(e)
-            print(self.get_message(self.sock))
+            for contact in self.get_message(self.sock):
+                self.database.add_contact(contact)
 
     @CallLogger()
     def edit_contacts(self):
@@ -111,6 +113,18 @@ class ClientMessenger(AbstractMessenger):
             self.send_message(self.sock, {vars.TIME: time.time(), vars.USER: {
                 vars.ACCOUNT_NAME: self.account_name
             }, vars.USER_ID: user_name, vars.ACTION: vars.ADD_CONTACT if command == 'add' else vars.REMOVE_CONTACT})
+
+    def add_contact(self, user_name):
+        with self.socket_lock:
+            self.send_message(self.sock, {vars.TIME: time.time(), vars.USER: {
+                vars.ACCOUNT_NAME: self.account_name
+            }, vars.USER_ID: user_name, vars.ACTION: vars.ADD_CONTACT})
+
+    def remove_contact(self, user_name):
+        with self.socket_lock:
+            self.send_message(self.sock, {vars.TIME: time.time(), vars.USER: {
+                vars.ACCOUNT_NAME: self.account_name
+            }, vars.USER_ID: user_name, vars.ACTION: vars.REMOVE_CONTACT})
 
     @CallLogger()
     def receive_message(self):
