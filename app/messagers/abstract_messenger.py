@@ -14,16 +14,19 @@ class AbstractMessenger:
     listen_host = Host()
     listen_port = Port()
     account_name: str
+    password: str
 
     def get_config_data(self, default_ip=None, default_port=None):
         parser = argparse.ArgumentParser()
         parser.add_argument('-a', '--addr', default=default_ip or vars.DEFAULT_SERVER_IP, nargs='?')
         parser.add_argument('-p', '--port', default=default_port or vars.DEFAULT_SERVER_PORT, type=int, nargs='?')
         parser.add_argument('-n', '--name', default='listen', nargs='?')
+        parser.add_argument('-P', '--password', default='', nargs='?')
         args = parser.parse_args(sys.argv[1:])
         self.listen_host = args.addr
         self.listen_port = int(args.port)
         self.account_name = args.name
+        self.password = args.password
 
     def get_message(self, sock: socket) -> dict:
         """

@@ -1,10 +1,46 @@
+import binascii
+import hmac
+import os
 from socket import socket
 from common import vars
+from deorators.login_required import login_required
 from messagers.abstract_messenger import AbstractMessenger
 from deorators.call_logger import CallLogger
 
+
 class ServerMessenger(AbstractMessenger):
     @CallLogger()
+    def authorise_user(self, client_socket, message):
+        message_auth = self.create_response(511)
+        random_str = binascii.hexlify(os.urandom(64))
+        message_auth[vars.DATA] = random_str.decode('ascii')
+        hash = hmac.new(self.database.get_hash(message[vars.USER][vars.ACCOUNT_NAME]), random_str, 'MD5')
+        digest = hash.digest()
+
+        self.send_message(client_socket, message_auth)
+        answer = self.get_message(client_socket)
+        client_digest = binascii.a2b_base64(answer[vars.DATA])
+
+        if vars.RESPONSE in answer and answer[vars.RESPONSE] == 511 and hmac.compare_digest(
+                digest, client_digest):
+            client_ip, client_port = client_socket.getpeername()
+            self.database.user_login(
+            message[vars.USER][vars.ACCOUNT_NAME],
+            client_ip,
+            client_port,
+            message[vars.USER][vars.PUBLIC_KEY])
+
+            self.users_list[message[vars.USER][vars.ACCOUNT_NAME]] = client_socket
+            self.send_message(client_socket, self.create_response())
+        else:
+            try:
+                self.send_message(client_socket, self.create_response(400, 'Неверный пароль'))
+            except OSError:
+                pass
+            self.clients.remove(client_socket)
+            client_socket.close()
+
+    @login_required()
     def process_client_message(self, client_sock: socket):
         """
         Получение сообщения от клиента и постановка его в очередь сообщений
@@ -20,11 +56,9 @@ class ServerMessenger(AbstractMessenger):
         if vars.ACTION in message and vars.TIME in message and vars.USER in message:
             # Страшно переходить на версию 3.10 но очень хочется матч кейс
             if message[vars.ACTION] == vars.PRESENCE:
-                if message[vars.USER][vars.ACCOUNT_NAME] not in self.users_list.keys():
-                    self.users_list[message[vars.USER][vars.ACCOUNT_NAME]] = client_sock
-                    client_ip, client_port = client_sock.getpeername()
-                    self.database.user_login(message[vars.USER][vars.ACCOUNT_NAME], client_ip, client_port)
-                    self.send_message(client_sock, self.create_response())
+                if message[vars.USER][vars.ACCOUNT_NAME] not in self.users_list.keys() \
+                        and self.database.check_user(message[vars.USER][vars.ACCOUNT_NAME]):
+                    self.authorise_user(client_sock, message)
                 else:
                     self.send_message(client_sock, self.create_response('Имя пользователя уже занято.'))
                     client_sock.close()

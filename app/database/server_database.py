@@ -1,3 +1,5 @@
+import os
+
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, ForeignKey, DateTime
 from sqlalchemy.orm import mapper, sessionmaker
 from common.vars import SERVER_DATABASE
@@ -10,9 +12,11 @@ logger = logging.getLogger('app.server')
 
 class ServerStorage:
     class AllUsers:
-        def __init__(self, username):
+        def __init__(self, username, passwd_hash):
             self.name = username
             self.last_login = datetime.datetime.now()
+            self.passwd_hash = passwd_hash
+            self.pubkey = None
             self.id = None
 
     class ActiveUsers:
@@ -54,6 +58,7 @@ class ServerStorage:
             'Users', self.metadata,
             Column('id', Integer, primary_key=True),
             Column('name', String, unique=True),
+            Column('passwd_hash', String),
             Column('last_login', DateTime)
         )
 
@@ -223,3 +228,21 @@ class ServerStorage:
             self.UsersHistory.accepted
         ).join(self.AllUsers)
         return query.all()
+
+    def get_user_salt(self, username):
+        result = self.session.query(self.AllUsers).filter_by(name=username)
+        if result.count():
+            return result.first().salt
+        return None
+
+    def register_user(self, username, passwd_hash):
+        user = self.AllUsers(username, passwd_hash)
+        self.session.add(user)
+        self.session.commit()
+
+    def check_user(self, username):
+        return self.session.query(self.AllUsers).filter_by(name=username).count() > 0
+
+    def get_hash(self, username):
+        user = self.session.query(self.AllUsers).filter_by(name=username).first()
+        return user.passwd_hash
