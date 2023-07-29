@@ -31,6 +31,19 @@ class Client(ClientMessenger, metaclass=ClientMaker):
     def runner(self):
         self.connect()
 
+        client_app = QApplication(sys.argv)
+
+        start_dialog = UserNameDialog()
+        if not self.account_name or not self.password:
+            client_app.exec()
+            # Если пользователь ввёл имя и нажал ОК, то сохраняем ведённое и
+            # удаляем объект, инааче выходим
+            if start_dialog.ok_pressed:
+                client_name = start_dialog.client_name.text()
+                client_passwd = start_dialog.client_passwd.text()
+            else:
+                exit(0)
+
         receiver = threading.Thread(target=self.receive_message)
         receiver.daemon = True
         receiver.start()
@@ -39,7 +52,7 @@ class Client(ClientMessenger, metaclass=ClientMaker):
         sender.daemon = True
         sender.start()
 
-        client_app = QApplication(sys.argv)
+        del start_dialog
         main_window = ClientMainWindow(self)
         #main_window.make_connection(self)
         main_window.setWindowTitle(f'Чат Программа alpha release - {self.account_name}')

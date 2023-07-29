@@ -25,5 +25,8 @@ USER_ID = 'user_id'
 LIST_INFO = 'list_info'
 ERROR = 'error'
 EXIT = 'exit'
+DATA = 'bin'
+PUBLIC_KEY = 'pubkey'
+PUBLIC_KEY_REQUEST = 'pubkey_need'
 
 SERVER_DATABASE = 'sqlite:///server_base.db3'

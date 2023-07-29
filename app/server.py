@@ -15,7 +15,8 @@ from messagers.server_messenger import ServerMessenger
 from meta_classes.server_maker import ServerMaker
 from deorators.call_logger import CallLogger
 from database.server_database import ServerStorage
-
+from gui.add_user import RegisterUser
+from gui.remove_user import DelUserDialog
 
 config = configparser.ConfigParser()
 
@@ -174,9 +175,23 @@ def main():
                     'Ошибка',
                     'Порт должен быть от 1024 до 65536')
 
+    def reg_user():
+        '''Метод создающий окно регистрации пользователя.'''
+        global reg_window
+        reg_window = RegisterUser(database, server)
+        reg_window.show()
+
+    def rem_user():
+        '''Метод создающий окно удаления пользователя.'''
+        global rem_window
+        rem_window = DelUserDialog(database, server)
+        rem_window.show()
+
     main_window.refresh_button.triggered.connect(list_update)
     main_window.show_history_button.triggered.connect(show_statistics)
     main_window.config_btn.triggered.connect(server_config)
+    main_window.create_user_button.triggered.connect(reg_user)
+    main_window.create_user_button.triggered.connect(rem_user)
 
     server_app.exec()
 

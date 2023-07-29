@@ -1,3 +1,6 @@
+import binascii
+import hashlib
+import hmac
 import logging
 import threading
 import time
@@ -8,7 +11,6 @@ from deorators.call_logger import CallLogger
 from loggers.client_logs import server_logger
 
 
-
 class ClientMessenger(AbstractMessenger):
     def __init__(self):
         self.socket_lock = threading.Lock()
@@ -16,6 +18,12 @@ class ClientMessenger(AbstractMessenger):
     @CallLogger()
     def create_presence(self):
         self.logger.debug(f'Create presence message account_name: {self.account_name}')
+
+        passwd_bytes = self.password.encode('utf-8')
+        salt = self.account_name.lower().encode('utf-8')
+        passwd_hash = hashlib.pbkdf2_hmac('sha512', passwd_bytes, salt, 10000)
+        passwd_hash_string = binascii.hexlify(passwd_hash)
+
         with self.socket_lock:
             self.send_message(self.sock, {
                 vars.ACTION: vars.PRESENCE,
@@ -24,6 +32,14 @@ class ClientMessenger(AbstractMessenger):
                     vars.ACCOUNT_NAME: self.account_name
                 }
             })
+            answer = self.get_message(self.sock)
+            if answer[vars.RESPONSE] == 511:
+                ans_data = answer[vars.DATA]
+                hash = hmac.new(passwd_hash_string, ans_data.encode('utf-8'), 'MD5')
+                digest = hash.digest()
+                my_ans = self.create_response(511)
+                my_ans[vars.DATA] = binascii.b2a_base64(digest).decode('ascii')
+                self.send_message(self.sock, my_ans)
 
     def print_help(self):
         print('Поддерживаемые команды:')
