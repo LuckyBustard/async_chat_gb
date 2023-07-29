@@ -4,6 +4,7 @@ from PyQt6.QtCore import QEvent
 
 # Стартовый диалог с выбором имени пользователя
 class UserNameDialog(QDialog):
+    """Стартовый диалог с выбором имени пользователя, если не были указаны при запуске из консоли"""
     def __init__(self):
         super().__init__()
 

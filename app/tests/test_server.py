@@ -5,53 +5,53 @@ import unittest
 sys.path.append(os.path.join(os.getcwd(), '..'))
 
 from server import client_presence
-from common import vars
+from common import variables
 
 
 class TestServer(unittest.TestCase):
-    ok_data = {vars.RESPONSE: 200}
+    ok_data = {variables.RESPONSE: 200}
     err_data = {
-        vars.RESPONSE: 400,
-        vars.ERROR: 'Bad request'
+        variables.RESPONSE: 400,
+        variables.ERROR: 'Bad request'
     }
 
     def test_no_action(self):
         self.assertEqual(client_presence({
-            vars.TIME: '0',
-            vars.USER: {
-                vars.ACCOUNT_NAME: 'Guest'
+            variables.TIME: '0',
+            variables.USER: {
+                variables.ACCOUNT_NAME: 'Guest'
             }
         }), self.err_data)
 
     def test_no_time(self):
         self.assertEqual(client_presence({
-            vars.ACTION: vars.PRESENCE,
-            vars.USER: {
-                vars.ACCOUNT_NAME: 'Guest'
+            variables.ACTION: variables.PRESENCE,
+            variables.USER: {
+                variables.ACCOUNT_NAME: 'Guest'
             }
         }), self.err_data)
 
     def test_no_user(self):
         self.assertEqual(client_presence({
-            vars.ACTION: vars.PRESENCE,
-            vars.TIME: '0',
+            variables.ACTION: variables.PRESENCE,
+            variables.TIME: '0',
         }), self.err_data)
 
     def test_wrong_user(self):
         self.assertEqual(client_presence({
-            vars.ACTION: vars.PRESENCE,
-            vars.TIME: '0',
-            vars.USER: {
-                vars.ACCOUNT_NAME: 'Admin'
+            variables.ACTION: variables.PRESENCE,
+            variables.TIME: '0',
+            variables.USER: {
+                variables.ACCOUNT_NAME: 'Admin'
             }
         }), self.err_data)
 
     def test_ok(self):
         self.assertEqual(client_presence({
-            vars.ACTION: vars.PRESENCE,
-            vars.TIME: '0',
-            vars.USER: {
-                vars.ACCOUNT_NAME: 'Guest'
+            variables.ACTION: variables.PRESENCE,
+            variables.TIME: '0',
+            variables.USER: {
+                variables.ACCOUNT_NAME: 'Guest'
             }
         }), self.ok_data)
 

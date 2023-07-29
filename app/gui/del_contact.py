@@ -11,6 +11,7 @@ logger = logging.getLogger('app.client')
 
 # Диалог выбора контакта для удаления
 class DelContactDialog(QDialog):
+    """Диалог удаления контактов"""
     def __init__(self, database):
         super().__init__()
         self.database = database

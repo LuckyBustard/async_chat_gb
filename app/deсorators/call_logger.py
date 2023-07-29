@@ -1,3 +1,4 @@
+"""Логирование вызова функции"""
 import inspect
 import logging
 import sys

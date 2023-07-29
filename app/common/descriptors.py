@@ -4,6 +4,7 @@ logger = logging.getLogger('app.server')
 
 
 class Port:
+    """Дескриптор для проверки и установки порта"""
     def __set__(self, instance, value):
         if not isinstance(value, int):
             logger.critical(
@@ -23,6 +24,7 @@ class Port:
 
 
 class Host:
+    """Дескриптор для проверки и установки хоста"""
     def __set__(self, instance, value):
         if not isinstance(value, str):
             logger.critical(

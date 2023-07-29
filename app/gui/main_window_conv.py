@@ -9,6 +9,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 class Ui_MainClientWindow(object):
+    """Основное окно клиентского приложения"""
     def setupUi(self, MainClientWindow):
         MainClientWindow.setObjectName("MainClientWindow")
         MainClientWindow.resize(756, 534)

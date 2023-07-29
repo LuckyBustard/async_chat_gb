@@ -52,11 +52,13 @@ def create_stat_model(database):
 
 # Класс основного окна
 class MainWindow(QMainWindow):
+    """Класс окна управление сервером"""
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
+        """Построение интерфейса окна управления сервером"""
         # Кнопка выхода
         exitAction = QAction('Выход', self)
         exitAction.setShortcut('Ctrl+Q')
@@ -108,11 +110,13 @@ class MainWindow(QMainWindow):
 
 # Класс окна с историей пользователей
 class HistoryWindow(QDialog):
+    """Класс окна с истонией пользователей"""
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
+        """Построение интерфейса окна управления сервером"""
         # Настройки окна:
         self.setWindowTitle('Статистика клиентов')
         self.setFixedSize(600, 700)
@@ -133,11 +137,13 @@ class HistoryWindow(QDialog):
 
 # Класс окна настроек
 class ConfigWindow(QDialog):
+    """Класс окна настроек"""
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
+        """Построение интерфейса окна управления сервером"""
         # Настройки окна
         self.setFixedSize(365, 260)
         self.setWindowTitle('Настройки сервера')

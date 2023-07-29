@@ -1,3 +1,4 @@
+"""Общие переменные"""
 DEFAULT_SERVER_IP = '0.0.0.0'
 DEFAULT_SERVER_PORT = 7777
 

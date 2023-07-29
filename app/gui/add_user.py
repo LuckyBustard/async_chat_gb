@@ -7,7 +7,7 @@ import binascii
 
 
 class RegisterUser(QDialog):
-    '''Класс диалог регистрации пользователя на сервере.'''
+    """Класс диалог регистрации пользователя на сервере."""
 
     def __init__(self, database, server):
         super().__init__()
@@ -65,30 +65,30 @@ class RegisterUser(QDialog):
             self.messages.critical(
                 self, 'Ошибка', 'Не указано имя пользователя.')
             return
-        elif self.client_passwd.text() != self.client_conf.text():
+        if self.client_passwd.text() != self.client_conf.text():
             self.messages.critical(
                 self, 'Ошибка', 'Введённые пароли не совпадают.')
             return
-        elif self.database.check_user(self.client_name.text()):
+        if self.database.check_user(self.client_name.text()):
             self.messages.critical(
                 self, 'Ошибка', 'Пользователь уже существует.')
             return
-        else:
-            # Генерируем хэш пароля, в качестве соли будем использовать логин в
-            # нижнем регистре.
-            passwd_bytes = self.client_passwd.text().encode('utf-8')
-            salt = self.client_name.text().lower().encode('utf-8')
-            passwd_hash = hashlib.pbkdf2_hmac(
-                'sha512', passwd_bytes, salt, 10000)
-            self.database.register_user(
-                self.client_name.text(),
-                binascii.hexlify(passwd_hash)
-            )
-            self.messages.information(
-                self, 'Успех', 'Пользователь успешно зарегистрирован.')
-            # Рассылаем клиентам сообщение о необходимости обновить справичники
-            self.server.service_update_lists()
-            self.close()
+
+        # Генерируем хэш пароля, в качестве соли будем использовать логин в
+        # нижнем регистре.
+        passwd_bytes = self.client_passwd.text().encode('utf-8')
+        salt = self.client_name.text().lower().encode('utf-8')
+        passwd_hash = hashlib.pbkdf2_hmac(
+            'sha512', passwd_bytes, salt, 10000)
+        self.database.register_user(
+            self.client_name.text(),
+            binascii.hexlify(passwd_hash)
+        )
+        self.messages.information(
+            self, 'Успех', 'Пользователь успешно зарегистрирован.')
+        # Рассылаем клиентам сообщение о необходимости обновить справичники
+        self.server.service_update_lists()
+        self.close()
 
 
 if __name__ == '__main__':

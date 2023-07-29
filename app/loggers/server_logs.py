@@ -1,3 +1,5 @@
+"""Логгер сервереного приложения"""
+
 import logging
 import os
 from logging import handlers
