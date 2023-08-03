@@ -14,6 +14,7 @@ logger = logging.getLogger('app.client')
 
 # Класс основного окна
 class ClientMainWindow(QMainWindow):
+    """Основное окно клиента"""
     def __init__(self, client):
         super().__init__()
         # основные переменные
@@ -67,6 +68,7 @@ class ClientMainWindow(QMainWindow):
 
     # Заполняем историю сообщений.
     def history_list_update(self):
+        """Загрузска истории сообщения"""
         # Получаем историю сортированную по дате
         list = sorted(self.client.database.get_history(self.current_chat), key=lambda item: item[3])
         # Если модель не создана, создадим.
@@ -118,6 +120,7 @@ class ClientMainWindow(QMainWindow):
 
     # Функция обновляющяя контакт лист
     def clients_list_update(self):
+        """Обновление списка клиентов"""
         contacts_list = self.client.database.get_contacts()
         self.contacts_model = QStandardItemModel()
         for i in sorted(contacts_list):
@@ -141,6 +144,7 @@ class ClientMainWindow(QMainWindow):
 
     # Функция добавляющяя контакт в базы
     def add_contact(self, new_contact):
+        """Добавление контактов"""
         try:
             self.client.add_contact(new_contact)
         except OSError as err:
@@ -165,6 +169,7 @@ class ClientMainWindow(QMainWindow):
 
     # Функция обработчик удаления контакта, сообщает на сервер, обновляет таблицу контактов
     def delete_contact(self, item):
+        """Удаление контактов"""
         selected = item.selector.currentText()
         try:
             self.client.remove_contact(selected)
@@ -186,6 +191,7 @@ class ClientMainWindow(QMainWindow):
 
     # Функция отправки собщения пользователю.
     def send_message(self):
+        """Отправка сообщения"""
         # Текст в поле, проверяем что поле не пустое затем забирается сообщение и поле очищается
         message_text = self.ui.text_message.toPlainText()
         self.ui.text_message.clear()

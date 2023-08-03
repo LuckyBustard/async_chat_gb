@@ -2,7 +2,7 @@ import os
 
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, ForeignKey, DateTime
 from sqlalchemy.orm import mapper, sessionmaker
-from common.vars import SERVER_DATABASE
+from common.variables import SERVER_DATABASE
 import datetime
 import logging
 import loggers.server_logs
@@ -11,7 +11,9 @@ logger = logging.getLogger('app.server')
 
 
 class ServerStorage:
+    """Класс для работы с бд на сервере"""
     class AllUsers:
+        """Зарегестрированные пользователи"""
         def __init__(self, username, passwd_hash):
             self.name = username
             self.last_login = datetime.datetime.now()
@@ -20,6 +22,7 @@ class ServerStorage:
             self.id = None
 
     class ActiveUsers:
+        """Авторизованные пользователи"""
         def __init__(self, user_id, ip_address, port, login_time):
             self.user = user_id
             self.ip_address = ip_address
@@ -28,6 +31,7 @@ class ServerStorage:
             self.id = None
 
     class LoginHistory:
+        """История авторизации"""
         def __init__(self, name, date, ip, port):
             self.id = None
             self.name = name
@@ -36,12 +40,14 @@ class ServerStorage:
             self.port = port
 
     class UsersContacts:
+        """Контакты пользователей"""
         def __init__(self, user, contact):
             self.id = None
             self.user = user
             self.contact = contact
 
     class UsersHistory:
+        """Статистика пользоватлей"""
         def __init__(self, user):
             self.id = None
             self.user = user
@@ -113,6 +119,7 @@ class ServerStorage:
         self.metadata.drop_all(self.database_engine)
 
     def user_login(self, username, ip_address, port):
+        """Авторизация пользователя"""
         logger.debug(username)
         result = self.session.query(self.AllUsers).filter_by(name=username)
         if result.count():
@@ -138,11 +145,13 @@ class ServerStorage:
         self.session.commit()
 
     def user_logout(self, username):
+        """Отключение пользователя"""
         user = self.session.query(self.AllUsers).filter_by(name=username).first()
         self.session.query(self.ActiveUsers).filter_by(user=user.id).delete()
         self.session.commit()
 
     def users_list(self):
+        """Получение списка пользоватлей сервера"""
         query = self.session.query(
             self.AllUsers.name,
             self.AllUsers.last_login,
@@ -150,6 +159,7 @@ class ServerStorage:
         return query.all()
 
     def active_users_list(self):
+        """Получение списка активных пользовтаелей"""
         query = self.session.query(
             self.AllUsers.name,
             self.ActiveUsers.ip_address,
@@ -159,6 +169,7 @@ class ServerStorage:
         return query.all()
 
     def login_history(self, username=None):
+        """Получение истории авторизации"""
         query = self.session.query(
             self.AllUsers.name,
             self.LoginHistory.date_time,
@@ -170,6 +181,7 @@ class ServerStorage:
         return query.all()
 
     def get_contacts(self, username):
+        """Получение списка контактов"""
         user = self.session.query(self.AllUsers).filter_by(name=username).first()
 
         query = self.session.query(self.UsersContacts, self.AllUsers.name). \
@@ -179,6 +191,7 @@ class ServerStorage:
         return [contact[1] for contact in query.all()]
 
     def get_users(self):
+        """Получение всех пользователей сервера"""
         query = self.session.query(
             self.AllUsers.id,
             self.AllUsers.name
@@ -186,6 +199,7 @@ class ServerStorage:
         return [tuple(row) for row in query.all()]
 
     def add_contact(self, user, contact):
+        """Добавление контакта"""
         user = self.session.query(self.AllUsers).filter_by(name=user).first()
         contact = self.session.query(self.AllUsers).filter_by(name=contact).first()
 
@@ -198,6 +212,7 @@ class ServerStorage:
         self.session.commit()
 
     def remove_contact(self, user, contact):
+        """Удаление контакта"""
         user = self.session.query(self.AllUsers).filter_by(name=user).first()
         contact = self.session.query(self.AllUsers).filter_by(name=contact).first()
 
@@ -211,6 +226,7 @@ class ServerStorage:
         self.session.commit()
 
     def process_message(self, sender, recipient):
+        """Отправка сообщения от пользователя к пользователю"""
         sender = self.session.query(self.AllUsers).filter_by(name=sender).first().id
         recipient = self.session.query(self.AllUsers).filter_by(name=recipient).first().id
         sender_row = self.session.query(self.UsersHistory).filter_by(user=sender).first()
@@ -221,6 +237,7 @@ class ServerStorage:
         self.session.commit()
 
     def message_history(self):
+        """Получение истории сообщений"""
         query = self.session.query(
             self.AllUsers.name,
             self.AllUsers.last_login,
@@ -230,19 +247,23 @@ class ServerStorage:
         return query.all()
 
     def get_user_salt(self, username):
+        """Получение пользовательской соли"""
         result = self.session.query(self.AllUsers).filter_by(name=username)
         if result.count():
             return result.first().salt
         return None
 
     def register_user(self, username, passwd_hash):
+        """Регистрация пользователя"""
         user = self.AllUsers(username, passwd_hash)
         self.session.add(user)
         self.session.commit()
 
     def check_user(self, username):
+        """Проверька существования пользователя"""
         return self.session.query(self.AllUsers).filter_by(name=username).count() > 0
 
     def get_hash(self, username):
+        """Получение хешированного паролья пользователя"""
         user = self.session.query(self.AllUsers).filter_by(name=username).first()
         return user.passwd_hash

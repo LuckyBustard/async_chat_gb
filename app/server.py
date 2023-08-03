@@ -1,3 +1,4 @@
+"""Основной файл для запуска сервера"""
 import configparser
 import os
 import sys
@@ -9,16 +10,18 @@ from select import select
 
 from PyQt6.QtWidgets import QApplication, QMessageBox
 
-from common import vars
+from common import variables
 from gui.server_gui import MainWindow, gui_create_model, ConfigWindow, HistoryWindow, create_stat_model
 from messagers.server_messenger import ServerMessenger
 from meta_classes.server_maker import ServerMaker
-from deorators.call_logger import CallLogger
+from deсorators.call_logger import CallLogger
 from database.server_database import ServerStorage
 from gui.add_user import RegisterUser
 from gui.remove_user import DelUserDialog
 
 config = configparser.ConfigParser()
+
+"""Класс сервера прием и обработка сообщений"""
 
 
 class Server(ServerMessenger, threading.Thread, metaclass=ServerMaker):
@@ -36,7 +39,7 @@ class Server(ServerMessenger, threading.Thread, metaclass=ServerMaker):
     def init_socket(self):
         self.transport = socket(AF_INET, SOCK_STREAM)
         self.transport.bind((self.listen_host, self.listen_port))
-        self.transport.listen(vars.MAX_CONNECTIONS)
+        self.transport.listen(variables.MAX_CONNECTIONS)
         self.transport.settimeout(0.5)
 
     @CallLogger()
@@ -45,6 +48,7 @@ class Server(ServerMessenger, threading.Thread, metaclass=ServerMaker):
 
     @CallLogger()
     def run(self):
+        """Основной метод сервера для работы, принимает соединения и обрабатывает """
         self.init_socket()
 
         while True:
@@ -77,14 +81,14 @@ class Server(ServerMessenger, threading.Thread, metaclass=ServerMaker):
                 for wait_message in self.waiting_messages:
                     user_name = wait_message[2]
                     message = {
-                        vars.ACTION: vars.MESSAGE,
-                        vars.USER: wait_message[0],
-                        vars.TIME: time.time(),
-                        vars.MESSAGE_TEXT: wait_message[1]
+                        variables.ACTION: variables.MESSAGE,
+                        variables.USER: wait_message[0],
+                        variables.TIME: time.time(),
+                        variables.MESSAGE_TEXT: wait_message[1]
                     }
                     self.waiting_messages.remove(wait_message)
 
-                    if wait_message[2] == vars.DESTINATION_ALL:
+                    if wait_message[2] == variables.DESTINATION_ALL:
                         self.message_sender_broadcast(send_queue, message)
                     else:
                         self.message_sender(user_name, message)
@@ -99,6 +103,7 @@ class Server(ServerMessenger, threading.Thread, metaclass=ServerMaker):
 
 
 def main():
+    """Метод настроек и запуска основного потока приложения, GUI интерфейс"""
     dir_path = os.path.dirname(os.path.realpath(__file__))
     config.read(f"{dir_path}/{'server.ini'}")
 
@@ -152,6 +157,7 @@ def main():
 
     # Функция сохранения настроек
     def save_server_config():
+        """Сохранение конфигурации"""
         global config_window
         message = QMessageBox()
         config['SETTINGS']['Database_path'] = config_window.db_path.text()
@@ -176,13 +182,13 @@ def main():
                     'Порт должен быть от 1024 до 65536')
 
     def reg_user():
-        '''Метод создающий окно регистрации пользователя.'''
+        """Метод создающий окно регистрации пользователя."""
         global reg_window
         reg_window = RegisterUser(database, server)
         reg_window.show()
 
     def rem_user():
-        '''Метод создающий окно удаления пользователя.'''
+        """Метод создающий окно удаления пользователя."""
         global rem_window
         rem_window = DelUserDialog(database, server)
         rem_window.show()

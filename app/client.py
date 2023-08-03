@@ -9,12 +9,14 @@ from meta_classes.client_maker import ClientMaker
 from socket import socket, AF_INET, SOCK_STREAM
 from messagers.client_messenger import ClientMessenger
 from database.client_database import ClientStorage
-from deorators.call_logger import CallLogger
+from deсorators.call_logger import CallLogger
 from gui.main_window import ClientMainWindow
 from gui.start_dialog import UserNameDialog
 
 
 class Client(ClientMessenger, metaclass=ClientMaker):
+    """fdsfds Основной 111 класс для запуска клиентского приложения. Подключение, отправка сообщений GUI интерфейс"""
+
     def __init__(self):
         super().__init__()
         self.sock = None
@@ -29,6 +31,7 @@ class Client(ClientMessenger, metaclass=ClientMaker):
         self.sock.connect((self.listen_host, self.listen_port))
 
     def runner(self):
+        """Основной метод для подключения и работы с сервером"""
         self.connect()
 
         client_app = QApplication(sys.argv)

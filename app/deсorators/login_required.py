@@ -1,3 +1,4 @@
+"""Проверка авторизации пользователя на сервере"""
 import inspect
 import logging
 import sys
@@ -21,7 +22,7 @@ def login_required(func):
 
     def checker(*args, **kwargs):
         from messagers.server_messenger import ServerMessenger
-        from common.vars import ACTION, PRESENCE
+        from common.variables import ACTION, PRESENCE
         if isinstance(args[0], ServerMessenger):
             found = False
             for arg in args:

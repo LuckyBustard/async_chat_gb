@@ -1,0 +1,12 @@
+Decorators
+==============
+
+call_logger.py
+~~~~~~~~~
+
+.. automodule:: deсorators.call_logger
+
+login_required.py
+~~~~~~~
+
+.. automodule:: decorators.login_required
